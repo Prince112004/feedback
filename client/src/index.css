@@ -1,0 +1,55 @@
+/* body {
+  font-family: sans-serif;
+  background: #f2f2f2;
+  padding: 2rem;
+}
+
+.app {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #4a90e2;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+ul {
+  margin-bottom: 2rem;
+}
+
+.answer {
+  margin-top: 1rem;
+  background: #e8f0fe;
+  padding: 1rem;
+  border-radius: 5px;
+} */
+/* Hide scrollbar for Webkit browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+* {
+  scrollbar-width: none;
+}
