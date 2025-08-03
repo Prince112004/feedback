@@ -20,7 +20,7 @@ function App() {
     setChat((prev) => [...prev, { type: "question", text: q }]);
     setQuestion("");
     try {
-      const res = await fetch("http://localhost:5000/ask", {
+      const res = await fetch("https://feedback-backend-7zp9.onrender.com/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q }),

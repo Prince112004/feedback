@@ -1,31 +1,41 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const axios = require('axios');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const axios = require("axios");
+require("dotenv").config();
 
 const app = express();
 const PORT = 5000;
 
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:3000", // local dev
+  process.env.FRONTEND_URL, // your deployed React app
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 
-app.post('/ask', async (req, res) => {
+app.post("/ask", async (req, res) => {
   const { question } = req.body;
 
   try {
     const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
+      "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "openai/gpt-3.5-turbo",  
+        model: "openai/gpt-3.5-turbo",
         messages: [{ role: "user", content: question }],
       },
       {
         headers: {
-          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'http://localhost:3000', 
-          'X-Title': 'MyApp' 
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+           "HTTP-Referer": process.env.FRONTEND_URL || "http://localhost:3000",
+          "X-Title": "MyApp",
         },
       }
     );
@@ -34,10 +44,10 @@ app.post('/ask', async (req, res) => {
     res.json({ answer });
   } catch (error) {
     console.error(error.response?.data || error.message);
-    res.status(500).json({ error: 'Failed to fetch answer from OpenRouter' });
+    res.status(500).json({ error: "Failed to fetch answer from OpenRouter" });
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
