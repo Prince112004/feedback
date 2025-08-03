@@ -8,13 +8,21 @@ const app = express();
 const PORT = 5000;
 
 const allowedOrigins = [
-  "http://localhost:3000", // local dev
-  process.env.FRONTEND_URL, // your deployed React app
-];
+  "http://localhost:3000",
+  process.env.FRONTEND_URL, // should be set in your .env
+].filter(Boolean); // removes undefined or empty values
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -34,7 +42,7 @@ app.post("/ask", async (req, res) => {
         headers: {
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-           "HTTP-Referer": process.env.FRONTEND_URL || "http://localhost:3000",
+          "HTTP-Referer": process.env.FRONTEND_URL || "http://localhost:3000",
           "X-Title": "MyApp",
         },
       }
